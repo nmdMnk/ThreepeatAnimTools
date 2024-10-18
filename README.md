@@ -28,6 +28,9 @@ This repo is a packaged version (with source code) of the plugin, so you can eit
 4.  You should now see a `ThreepeatAnimTools` folder inside `Plugins`
 5.  restart your Unreal Project
 
+## Supporting the project
+
+If you want to support the project: https://buymeacoffee.com/threepeatgames
 
 ## Something's not working, what do I do?
 
