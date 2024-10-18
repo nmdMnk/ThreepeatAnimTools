@@ -28,6 +28,11 @@ This repo is a packaged version (with source code) of the plugin, so you can eit
 4.  You should now see a `ThreepeatAnimTools` folder inside `Plugins`
 5.  restart your Unreal Project
 
+
+## Something's not working, what do I do?
+
+Post an issue here with as much detail as needed to reproduce the issue.  I'm releasing this for free, so I'm not promising any real support, but generally `effort out ~= effort and detail in`
+
 ## Pronunciation
 
  TATools sounds like tattoo and rhymes with pools.  Threepeat Anim Tools is also fine.
