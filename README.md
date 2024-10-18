@@ -24,6 +24,6 @@ This repo is a packaged version (with source code) of the plugin, so you can eit
 
 1. Go to the Unreal 5.4+ project where you'd like to install Threepeat AnimTools (TATools)
 2. create a `Plugins` folder in the root of the project (it will be alongside the `Content` folder, for example)
-3.  In the Plugins folder, run `git clone https://github.com/threepeatgames/ThreepeatAnimTools`
+3.  In the Plugins folder, run `git clone https://github.com/threepeatgames/ThreepeatAnimTools` or whatever your favorite git cloning is... Alternatively, just download the zip and extract it into the `Plugins` folder.
 4.  You should now see a `ThreepeatAnimTools` folder inside `Plugins`
 5.  restart your Unreal Project
