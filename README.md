@@ -4,7 +4,9 @@ This repository contains Unreal 5.4+ curve editor filters and a heavily-modified
 
 Announcement/Walkthrough Video: COMING SOON
 
-![Picker full view](tatools_fullview.jpg "TATools Full View")
+<!--![Picker full view](tatools_fullview.jpg "TATools Full View")-->
+<img src="tatools_fullview.jpg" width=400 />
+
 ## License
 
 See LICENSE.txt for more license info, but all portions of the picker that came from Epic's Metahuman picker are the sole property of Epic Games and licensed as Unreal-only content by them (not me).  
