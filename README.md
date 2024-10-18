@@ -1,4 +1,4 @@
-# Threepeat Anim Tools (TATools - Like tattoo with an "LS" on the the end...)
+# Threepeat Anim Tools (TATools - Like tattoo with an "LS" on the end)
 
 This repository contains Unreal 5.4+ curve editor filters and a heavily-modified MetaHuman character picker that works for both Metahuman and UE5-Mannequin-based control rigs.
 
