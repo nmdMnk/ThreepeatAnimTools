@@ -1,4 +1,4 @@
-# Threepeat Anim Tools (TATools - Like tattoo and rhymes with pools)
+# Threepeat Anim Tools (TATools)
 
 This repository contains Unreal 5.4+ curve editor filters and a heavily-modified MetaHuman character picker that works for both Metahuman and UE5-Mannequin-based control rigs.
 
@@ -27,3 +27,8 @@ This repo is a packaged version (with source code) of the plugin, so you can eit
 3.  In the Plugins folder, run `git clone https://github.com/threepeatgames/ThreepeatAnimTools` or whatever your favorite git cloning is... Alternatively, just download the zip and extract it into the `Plugins` folder.
 4.  You should now see a `ThreepeatAnimTools` folder inside `Plugins`
 5.  restart your Unreal Project
+
+## Pronunciation
+
+ TATools sounds like tattoo and rhymes with pools.  Threepeat Anim Tools is also fine.
+ 
