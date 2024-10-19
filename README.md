@@ -2,13 +2,14 @@
 
 This repository contains Unreal 5.4+ curve editor filters and a heavily-modified MetaHuman character picker that works for both Metahuman and UE5-Mannequin-based control rigs.
 
-Announcement/Walkthrough Video: 
+<!--![Picker full view](tatools_fullview.jpg "TATools Full View")-->
+<img src="tatools_fullview.jpg" width=400 />
+
+## Announcement/Walkthrough Video: 
 
 [![Tatools Youtube Announcement and Tutorial](https://img.youtube.com/vi/xQKvecYSuEE/0.jpg)](https://www.youtube.com/watch?v=xQKvecYSuEE)
 
 
-<!--![Picker full view](tatools_fullview.jpg "TATools Full View")-->
-<img src="tatools_fullview.jpg" width=400 />
 
 ## License
 
