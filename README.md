@@ -5,7 +5,7 @@ This repository contains Unreal 5.4+ curve editor filters and a heavily-modified
 <!--![Picker full view](tatools_fullview.jpg "TATools Full View")-->
 <img src="tatools_fullview.jpg" width=400 />
 
-## Announcement/Walkthrough Video: 
+## Announcement/Walkthrough Video (click image to go to youtube video): 
 
 [![Tatools Youtube Announcement and Tutorial](https://img.youtube.com/vi/xQKvecYSuEE/0.jpg)](https://www.youtube.com/watch?v=xQKvecYSuEE)
 
