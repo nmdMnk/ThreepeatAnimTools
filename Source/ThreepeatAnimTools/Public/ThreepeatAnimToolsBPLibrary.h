@@ -5,11 +5,10 @@
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "LevelSequence.h"
-//#include "LevelSequenceEditorToolkit.h"
+#include "LevelSequenceEditorToolkit.h"
 //#include "ISequencer.h"
 #include "UObject/ObjectMacros.h"
 #include "MovieSceneBindingProxy.h"
-#include "../../../../../../../Engines/UE_5.4/Engine/Plugins/MovieScene/LevelSequenceEditor/Source/LevelSequenceEditor/Private/LevelSequenceEditorToolkit.h"
 
 #include "ThreepeatAnimToolsBPLibrary.generated.h"
 

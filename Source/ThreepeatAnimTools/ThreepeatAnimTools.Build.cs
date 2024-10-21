@@ -1,6 +1,7 @@
 // Some copyright should be here...
 
 using UnrealBuildTool;
+using System.IO;
 
 public class ThreepeatAnimTools : ModuleRules
 {
@@ -17,7 +18,7 @@ public class ThreepeatAnimTools : ModuleRules
 		
 		PrivateIncludePaths.AddRange(
 			new string[] {
-				// ... add other private include paths required here ...
+				Path.Combine(GetModuleDirectory("LevelSequenceEditor"), "Private")
 			}
 			);
 			
