@@ -40,7 +40,7 @@ If you want to support the project: https://buymeacoffee.com/threepeatgames
 
 ## Something's not working, what do I do?
 
-Post an issue here with as much detail as needed to reproduce the issue.  I'm releasing this for free, so I'm not promising any real support, but generally `effort out ~= effort and detail in`
+Post an issue here with as much detail as needed to reproduce the issue.  Be descriptive!
 
 ## Pronunciation
 
