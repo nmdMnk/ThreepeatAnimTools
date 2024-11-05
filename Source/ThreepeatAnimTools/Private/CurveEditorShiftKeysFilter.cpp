@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Threepeat LLC, 2024. All Rights Reserved.
 
 
 #include "CurveEditorShiftKeysFilter.h"
@@ -164,8 +164,8 @@ void UCurveEditorShiftKeysFilter::ApplyFilter_Impl(TSharedRef<FCurveEditor> InCu
 		}
 
 		// Get all keys that exist between the time range
-		KeyHandles.Reset();
-		Curve->GetKeys(*InCurveEditor, MinKey, MaxKey, TNumericLimits<double>::Lowest(), TNumericLimits<double>::Max(), KeyHandles);
+		/*KeyHandles.Reset();
+		Curve->GetKeys(*InCurveEditor, MinKey, MaxKey, TNumericLimits<double>::Lowest(), TNumericLimits<double>::Max(), KeyHandles);*/
 
 		{
 			// get the selected key positions
