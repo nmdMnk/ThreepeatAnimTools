@@ -48,6 +48,7 @@
 #include "Editor/UnrealEd/Public/EditorViewportClient.h"
 #include <CurveEditorShiftKeysFilter.h>
 
+#include "Widgets/Layout/SScrollBar.h"
 
 UThreepeatAnimToolsBPLibrary::UThreepeatAnimToolsBPLibrary(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer)
@@ -300,4 +301,44 @@ float UThreepeatAnimToolsBPLibrary::ThreepeatExecuteShiftKeysFilter(bool bAlignF
 	CurveFilter->bAlignFirstKeyToPlayhead = bAlignFirst;
 	ExecuteFilter(CurveFilter);
 	return -1;
+}
+
+
+void UThreepeatAnimToolsBPLibrary::ThreepeatScrollSequencerToTopOrBottom(bool bScrollToTop)
+{
+	FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>(FName("AssetRegistry"));
+	IAssetRegistry& AssetRegistry = AssetRegistryModule.Get();
+	TArray<FAssetData> LevelSequenceAssetList;
+
+	UAssetEditorSubsystem* AssetEditorSubsystem = GEditor->GetEditorSubsystem<UAssetEditorSubsystem>();
+
+
+	AssetRegistry.GetAssetsByClass(FTopLevelAssetPath(ULevelSequence::StaticClass()->GetPathName()), LevelSequenceAssetList); //GetFName()), LevelSequenceAssetList);
+	for (FAssetData LevelSequenceAsset : LevelSequenceAssetList)
+	{
+		// Get LevelSequenceEditor
+		ULevelSequence* LevelSeq = Cast<ULevelSequence>(LevelSequenceAsset.GetAsset());
+
+		IAssetEditorInstance* AssetEditor = AssetEditorSubsystem->FindEditorForAsset(LevelSeq, false);
+		if (AssetEditor)
+		{
+			ILevelSequenceEditorToolkit* LevelSequenceEditor = static_cast<ILevelSequenceEditorToolkit*>(AssetEditor);
+			TSharedPtr<ISequencer> Sequencer = LevelSequenceEditor->GetSequencer();
+
+			if (Sequencer.IsValid())
+			{
+				UMovieSceneSequence* RootSequence = Sequencer->GetRootMovieSceneSequence();
+
+				UMovieScene* MovieScene = RootSequence->GetMovieScene();
+				const TArray<UMovieSceneTrack*>& MasterTracks = MovieScene->GetMasterTracks();
+
+				if (MasterTracks.Num() > 0)
+				{
+					Sequencer->SelectTrack(MasterTracks[0]);
+					Sequencer->ThrobSectionSelection();
+				}
+			}
+		}
+	}
+
 }

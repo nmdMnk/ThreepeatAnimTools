@@ -59,6 +59,9 @@ class UThreepeatAnimToolsBPLibrary : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Execute Shift Keys to Playhead Filter", Keywords = "ThreepeatAnimTools shift key keys filter"), Category = "ThreepeatAnimTools")
 	static float ThreepeatExecuteShiftKeysFilter(bool bAlignFirst = false);
 
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Scroll Sequencer View", Keywords = "ThreepeatAnimTools scroll sequencer top bottom"), Category = "ThreepeatAnimTools")
+	static void ThreepeatScrollSequencerToTopOrBottom(bool bScrollToTop = true);
+
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Apply Time Dilation to selected keys", Keywords = "ThreepeatAnimTools time dilation curveeditor sequencer"), Category = "ThreepeatAnimToolsTesting")
 	static float ApplyTimeDilationToSelection();
