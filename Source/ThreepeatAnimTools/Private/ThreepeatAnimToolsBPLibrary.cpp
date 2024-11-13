@@ -335,7 +335,6 @@ void UThreepeatAnimToolsBPLibrary::ThreepeatScrollSequencerToTopOrBottom(bool bS
 				if (MasterTracks.Num() > 0)
 				{
 					Sequencer->SelectTrack(MasterTracks[0]);
-					Sequencer->ThrobSectionSelection();
 				}
 			}
 		}

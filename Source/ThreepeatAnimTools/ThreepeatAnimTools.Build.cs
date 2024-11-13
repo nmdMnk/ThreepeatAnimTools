@@ -1,4 +1,4 @@
-// Some copyright should be here...
+// Copyright Threepeat LLC, 2024. All Rights Reserved.
 
 using UnrealBuildTool;
 using System.IO;
