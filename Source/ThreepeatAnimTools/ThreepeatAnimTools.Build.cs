@@ -1,4 +1,4 @@
-// Some copyright should be here...
+// Copyright Threepeat LLC, 2024. All Rights Reserved.
 
 using UnrealBuildTool;
 using System.IO;
@@ -31,9 +31,10 @@ public class ThreepeatAnimTools : ModuleRules
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
-			
-		
-		PrivateDependencyModuleNames.AddRange(
+
+        PrivateIncludePathModuleNames.AddRange(new string[] { "Sequencer" });
+
+        PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
                 "AssetDefinition",
