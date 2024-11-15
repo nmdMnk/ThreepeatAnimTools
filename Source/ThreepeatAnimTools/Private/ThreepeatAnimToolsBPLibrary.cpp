@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Threepeat LLC, 2024. All Rights Reserved.
 
 #include "ThreepeatAnimToolsBPLibrary.h"
 #include "ThreepeatAnimTools.h"
@@ -46,7 +46,9 @@
 #include "Slate/SceneViewport.h"
 #include "Editor/UnrealEd/Public/Editor.h"
 #include "Editor/UnrealEd/Public/EditorViewportClient.h"
+#include <CurveEditorShiftKeysFilter.h>
 
+#include "Widgets/Layout/SScrollBar.h"
 
 UThreepeatAnimToolsBPLibrary::UThreepeatAnimToolsBPLibrary(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer)
@@ -54,6 +56,7 @@ UThreepeatAnimToolsBPLibrary::UThreepeatAnimToolsBPLibrary(const FObjectInitiali
 
 }
 
+#ifdef FUTURE_CLIPBOARD
 void UThreepeatAnimToolsBPLibrary::ThreepeatAnimToolsClipboardInsert(FString contentsToPaste)
 {
 	/*// Get the Sequencer module
@@ -91,6 +94,7 @@ void UThreepeatAnimToolsBPLibrary::ThreepeatAnimToolsClipboardInsert(FString con
 
 	FPlatformApplicationMisc::ClipboardCopy(*contentsToPaste);
 }
+#endif
 
 void UThreepeatAnimToolsBPLibrary::ThreepeatAnimToolsViewerSnapshot(FString fname) 
 {
@@ -98,13 +102,14 @@ void UThreepeatAnimToolsBPLibrary::ThreepeatAnimToolsViewerSnapshot(FString fnam
 	FScreenshotRequest::RequestScreenshot(fullpath, false, false);
 }
 
+/*
 FString UThreepeatAnimToolsBPLibrary::ThreepeatAnimToolsClipboardThing(float Param)
 {
 	FString ClipboardContent;
 	FPlatformApplicationMisc::ClipboardPaste(ClipboardContent);
 	UE_LOG(LogTemp, Warning, TEXT("Clipboard contents: %s"), *ClipboardContent);
 	return ClipboardContent;
-}
+}*/
 
 
 void GetTimeDilationFloatChannels(ISequencer* Sequencer, TArray<TSharedPtr<FMovieSceneFloatChannel>>& OutChannels)
@@ -184,8 +189,7 @@ float UThreepeatAnimToolsBPLibrary::ApplyTimeDilationToSelection()
 	return -1;
 }
 
-
-float UThreepeatAnimToolsBPLibrary::ThreepeatExecuteEulerFilter()
+void ExecuteFilter(UCurveEditorFilterBase* filter)
 {
 	//UE_LOG(LogTemp, Warning, TEXT("Sample Function Called!"));
 
@@ -217,20 +221,19 @@ float UThreepeatAnimToolsBPLibrary::ThreepeatExecuteEulerFilter()
 				check(CurveEditorExtension);
 				TSharedPtr<FCurveEditor> CurveEditor = CurveEditorExtension->GetCurveEditor();
 				//UE_LOG(LogTemp, Warning, TEXT("Actually got a curve editor!"));
-				
+
 				//CurveEditor->TranslateSelectedKeysRight();
 				const TMap<FCurveModelID, FKeyHandleSet>& SelectedKeys = CurveEditor->GetSelection().GetAll();
 
 				FText TransactionText = FText::Format(NSLOCTEXT("CurveEditorFilterApply", "Filter Curves", "Filtered {0}|plural(one=Curve, other=Curves)"), CurveEditor->GetSelection().Count());
 				FScopedTransaction Transaction(TransactionText);
 
-				//UCurveEditorMakeHoldFilter* CurveFilter = UCurveEditorMakeHoldFilter::StaticClass()->GetDefaultObject<UCurveEditorMakeHoldFilter>();
-				UCurveEditorEulerFilter* CurveFilter = UCurveEditorEulerFilter::StaticClass()->GetDefaultObject< UCurveEditorEulerFilter>();
-				CurveFilter->InitializeFilter(CurveEditor->AsShared());
+
+				filter->InitializeFilter(CurveEditor->AsShared());
 
 				//UCurveEditorFilterBase* Filter = Cast<UCurveEditorFilterBase>();
 				TMap<FCurveModelID, FKeyHandleSet> OutKeysToSelect;
-				CurveFilter->ApplyFilter(CurveEditor.ToSharedRef(), SelectedKeys, OutKeysToSelect);
+				filter->ApplyFilter(CurveEditor.ToSharedRef(), SelectedKeys, OutKeysToSelect);
 
 				// Clear their selection and then set it to the keys the filter thinks you should have selected.
 				CurveEditor->GetSelection().Clear();
@@ -239,22 +242,16 @@ float UThreepeatAnimToolsBPLibrary::ThreepeatExecuteEulerFilter()
 				{
 					CurveEditor->GetSelection().Add(OutSet.Key, ECurvePointType::Key, OutSet.Value.AsArray());
 				}
-
-
-				return -1;
 			}
 		}
-		/*
-		//IAssetEditorInstance* AssetEditor = FAssetEditorManager::Get().FindEditorForAsset(LevelSeq, true);
-		FLevelSequenceEditorToolkit* LevelSequenceEditor = (FLevelSequenceEditorToolkit*)AssetEditor;
-		if (LevelSequenceEditor != nullptr)
-		{
-			// Get current Sequencer
-			ISequencer* Sequencer = LevelSequenceEditor->GetSequencer().Get();
-
-		}*/
 	}
+}
 
+
+float UThreepeatAnimToolsBPLibrary::ThreepeatExecuteEulerFilter()
+{
+	UCurveEditorEulerFilter* CurveFilter = UCurveEditorEulerFilter::StaticClass()->GetDefaultObject< UCurveEditorEulerFilter>();
+	ExecuteFilter(CurveFilter);
 	return -1;
 }
 
@@ -292,9 +289,23 @@ FString UThreepeatAnimToolsBPLibrary::SelectionSetToString(const TArray<FName>& 
 
 float UThreepeatAnimToolsBPLibrary::ThreepeatExecuteAlignToKeyFilter(bool bAlignToFirst)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("Sample Function Called!"));
+	UCurveEditorAlignToLastKeyFilter* CurveFilter = UCurveEditorAlignToLastKeyFilter::StaticClass()->GetDefaultObject< UCurveEditorAlignToLastKeyFilter>();
+	CurveFilter->bAlignToFirst = bAlignToFirst;
+	ExecuteFilter(CurveFilter);
+	return -1;
+}
 
-	// Get a list of ULevelSequence
+float UThreepeatAnimToolsBPLibrary::ThreepeatExecuteShiftKeysFilter(bool bAlignFirst)
+{
+	UCurveEditorShiftKeysFilter* CurveFilter = UCurveEditorShiftKeysFilter::StaticClass()->GetDefaultObject<UCurveEditorShiftKeysFilter>();
+	CurveFilter->bAlignFirstKeyToPlayhead = bAlignFirst;
+	ExecuteFilter(CurveFilter);
+	return -1;
+}
+
+
+void UThreepeatAnimToolsBPLibrary::ThreepeatScrollSequencerToTopOrBottom(bool bScrollToTop)
+{
 	FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>(FName("AssetRegistry"));
 	IAssetRegistry& AssetRegistry = AssetRegistryModule.Get();
 	TArray<FAssetData> LevelSequenceAssetList;
@@ -316,50 +327,17 @@ float UThreepeatAnimToolsBPLibrary::ThreepeatExecuteAlignToKeyFilter(bool bAlign
 
 			if (Sequencer.IsValid())
 			{
-				// Now you have the ISequencer instance, and you can manipulate it as needed
-				const TSharedPtr<UE::Sequencer::FSequencerEditorViewModel> SequencerViewModel = Sequencer->GetViewModel(); //Sequencer.Pin()->GetViewModel();
-				const UE::Sequencer::FCurveEditorExtension* CurveEditorExtension = SequencerViewModel->CastDynamic<UE::Sequencer::FCurveEditorExtension>();
-				check(CurveEditorExtension);
-				TSharedPtr<FCurveEditor> CurveEditor = CurveEditorExtension->GetCurveEditor();
-				//UE_LOG(LogTemp, Warning, TEXT("Actually got a curve editor!"));
+				UMovieSceneSequence* RootSequence = Sequencer->GetRootMovieSceneSequence();
 
-				//CurveEditor->TranslateSelectedKeysRight();
-				const TMap<FCurveModelID, FKeyHandleSet>& SelectedKeys = CurveEditor->GetSelection().GetAll();
+				UMovieScene* MovieScene = RootSequence->GetMovieScene();
+				const TArray<UMovieSceneTrack*>& MasterTracks = MovieScene->GetMasterTracks();
 
-				FText TransactionText = FText::Format(NSLOCTEXT("CurveEditorFilterApply", "Filter Curves", "Filtered {0}|plural(one=Curve, other=Curves)"), CurveEditor->GetSelection().Count());
-				FScopedTransaction Transaction(TransactionText);
-
-				//UCurveEditorMakeHoldFilter* CurveFilter = UCurveEditorMakeHoldFilter::StaticClass()->GetDefaultObject<UCurveEditorMakeHoldFilter>();
-				UCurveEditorAlignToLastKeyFilter* CurveFilter = UCurveEditorAlignToLastKeyFilter::StaticClass()->GetDefaultObject< UCurveEditorAlignToLastKeyFilter>();
-				CurveFilter->bAlignToFirst = bAlignToFirst;
-				CurveFilter->InitializeFilter(CurveEditor->AsShared());
-
-				//UCurveEditorFilterBase* Filter = Cast<UCurveEditorFilterBase>();
-				TMap<FCurveModelID, FKeyHandleSet> OutKeysToSelect;
-				CurveFilter->ApplyFilter(CurveEditor.ToSharedRef(), SelectedKeys, OutKeysToSelect);
-
-				// Clear their selection and then set it to the keys the filter thinks you should have selected.
-				CurveEditor->GetSelection().Clear();
-
-				for (const TTuple<FCurveModelID, FKeyHandleSet>& OutSet : OutKeysToSelect)
+				if (MasterTracks.Num() > 0)
 				{
-					CurveEditor->GetSelection().Add(OutSet.Key, ECurvePointType::Key, OutSet.Value.AsArray());
+					Sequencer->SelectTrack(MasterTracks[0]);
 				}
-
-
-				return -1;
 			}
 		}
-		/*
-		//IAssetEditorInstance* AssetEditor = FAssetEditorManager::Get().FindEditorForAsset(LevelSeq, true);
-		FLevelSequenceEditorToolkit* LevelSequenceEditor = (FLevelSequenceEditorToolkit*)AssetEditor;
-		if (LevelSequenceEditor != nullptr)
-		{
-			// Get current Sequencer
-			ISequencer* Sequencer = LevelSequenceEditor->GetSequencer().Get();
-
-		}*/
 	}
 
-	return -1;
 }
